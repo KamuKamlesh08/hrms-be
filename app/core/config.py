@@ -14,7 +14,13 @@ class Settings(BaseSettings):
     mongodb_uri: str = "mongodb://localhost:27017"
     mongodb_db_name: str = "hrms_lite"
 
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    # cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,https://hrms-fe-m00t.onrender.com,"
+   # just for renderer testing, as free deployment does not support to update env vars, but for local development, use the .env file
+    cors_origins: str = (
+        "http://localhost:5173,"
+        "http://127.0.0.1:5173,"
+        "https://hrms-fe-m00t.onrender.com"
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -28,6 +34,11 @@ class Settings(BaseSettings):
         return [item.strip() for item in self.cors_origins.split(",") if item.strip()]
 
 
+# @lru_cache
+# def get_settings() -> Settings:
+#     return Settings()
+
+# just for renderer testing, as free deployment does not support to update env vars, but for local development, use the .env file
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings(_env_file=None)
